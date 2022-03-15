@@ -1,4 +1,129 @@
-[TOC]
+# Spring-MVC-Demo
+
+[![](https://res.mowangblog.top/img/2021/10/website-blog-lightgrey)](https://mowangblog.top) [![](https://res.mowangblog.top/img/2021/10/bilibili-video-orange)](https://www.bilibili.com/video/BV1Ry4y1574R)
+
+📓Spring MVC 框架使用演示，点击在线文档查看详细笔记
+
+[![](https://img.shields.io/badge/在线-文档-yellowgreen)](https://mowangblog.github.io/SpringMVC-Demo/#/)
+
+## 目录
+
+- [一、SpringMVC简介](#%E4%B8%80springmvc%E7%AE%80%E4%BB%8B)
+    - [1、什么是MVC](#1%E4%BB%80%E4%B9%88%E6%98%AFmvc)
+    - [2、什么是SpringMVC](#2%E4%BB%80%E4%B9%88%E6%98%AFspringmvc)
+    - [3、SpringMVC的特点](#3springmvc%E7%9A%84%E7%89%B9%E7%82%B9)
+- [二、HelloWorld](#%E4%BA%8Chelloworld)
+    - [1、开发环境](#1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
+    - [2、创建maven工程](#2%E5%88%9B%E5%BB%BAmaven%E5%B7%A5%E7%A8%8B)
+        - [a>添加web模块](#a%E6%B7%BB%E5%8A%A0web%E6%A8%A1%E5%9D%97)
+        - [b>打包方式：war](#b%E6%89%93%E5%8C%85%E6%96%B9%E5%BC%8Fwar)
+        - [c>引入依赖](#c%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
+    - [3、配置web.xml](#3%E9%85%8D%E7%BD%AEwebxml)
+        - [a>默认配置方式](#a%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F)
+        - [b>扩展配置方式](#b%E6%89%A9%E5%B1%95%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F)
+    - [4、创建请求控制器](#4%E5%88%9B%E5%BB%BA%E8%AF%B7%E6%B1%82%E6%8E%A7%E5%88%B6%E5%99%A8)
+    - [5、创建springMVC的配置文件](#5%E5%88%9B%E5%BB%BAspringmvc%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+    - [6、测试HelloWorld](#6%E6%B5%8B%E8%AF%95helloworld)
+        - [a>实现对首页的访问](#a%E5%AE%9E%E7%8E%B0%E5%AF%B9%E9%A6%96%E9%A1%B5%E7%9A%84%E8%AE%BF%E9%97%AE)
+        - [b>通过超链接跳转到指定页面](#b%E9%80%9A%E8%BF%87%E8%B6%85%E9%93%BE%E6%8E%A5%E8%B7%B3%E8%BD%AC%E5%88%B0%E6%8C%87%E5%AE%9A%E9%A1%B5%E9%9D%A2)
+    - [7、总结](#7%E6%80%BB%E7%BB%93)
+- [三、@RequestMapping注解](#%E4%B8%89requestmapping%E6%B3%A8%E8%A7%A3)
+    - [1、@RequestMapping注解的功能](#1requestmapping%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8A%9F%E8%83%BD)
+    - [2、@RequestMapping注解的位置](#2requestmapping%E6%B3%A8%E8%A7%A3%E7%9A%84%E4%BD%8D%E7%BD%AE)
+    - [3、@RequestMapping注解的value属性](#3requestmapping%E6%B3%A8%E8%A7%A3%E7%9A%84value%E5%B1%9E%E6%80%A7)
+    - [4、@RequestMapping注解的method属性](#4requestmapping%E6%B3%A8%E8%A7%A3%E7%9A%84method%E5%B1%9E%E6%80%A7)
+    - [5、@RequestMapping注解的params属性（了解）](#5requestmapping%E6%B3%A8%E8%A7%A3%E7%9A%84params%E5%B1%9E%E6%80%A7%E4%BA%86%E8%A7%A3)
+    - [6、@RequestMapping注解的headers属性（了解）](#6requestmapping%E6%B3%A8%E8%A7%A3%E7%9A%84headers%E5%B1%9E%E6%80%A7%E4%BA%86%E8%A7%A3)
+    - [7、SpringMVC支持ant风格的路径](#7springmvc%E6%94%AF%E6%8C%81ant%E9%A3%8E%E6%A0%BC%E7%9A%84%E8%B7%AF%E5%BE%84)
+    - [8、SpringMVC支持路径中的占位符（重点）](#8springmvc%E6%94%AF%E6%8C%81%E8%B7%AF%E5%BE%84%E4%B8%AD%E7%9A%84%E5%8D%A0%E4%BD%8D%E7%AC%A6%E9%87%8D%E7%82%B9)
+- [四、SpringMVC获取请求参数](#%E5%9B%9Bspringmvc%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)
+    - [1、通过ServletAPI获取](#1%E9%80%9A%E8%BF%87servletapi%E8%8E%B7%E5%8F%96)
+    - [2、通过控制器方法的形参获取请求参数](#2%E9%80%9A%E8%BF%87%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95%E7%9A%84%E5%BD%A2%E5%8F%82%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)
+    - [3、@RequestParam](#3requestparam)
+    - [4、@RequestHeader](#4requestheader)
+    - [5、@CookieValue](#5cookievalue)
+    - [6、通过POJO获取请求参数](#6%E9%80%9A%E8%BF%87pojo%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)
+    - [7、解决获取请求参数的乱码问题](#7%E8%A7%A3%E5%86%B3%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E7%9A%84%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98)
+- [五、域对象共享数据](#%E4%BA%94%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [1、使用ServletAPI向request域对象共享数据](#1%E4%BD%BF%E7%94%A8servletapi%E5%90%91request%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [2、使用ModelAndView向request域对象共享数据](#2%E4%BD%BF%E7%94%A8modelandview%E5%90%91request%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [3、使用Model向request域对象共享数据](#3%E4%BD%BF%E7%94%A8model%E5%90%91request%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [4、使用map向request域对象共享数据](#4%E4%BD%BF%E7%94%A8map%E5%90%91request%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [5、使用ModelMap向request域对象共享数据](#5%E4%BD%BF%E7%94%A8modelmap%E5%90%91request%E5%9F%9F%E5%AF%B9%E8%B1%A1%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [6、Model、ModelMap、Map的关系](#6modelmodelmapmap%E7%9A%84%E5%85%B3%E7%B3%BB)
+    - [7、向session域共享数据](#7%E5%90%91session%E5%9F%9F%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+    - [8、向application域共享数据](#8%E5%90%91application%E5%9F%9F%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE)
+- [六、SpringMVC的视图](#%E5%85%ADspringmvc%E7%9A%84%E8%A7%86%E5%9B%BE)
+    - [1、ThymeleafView](#1thymeleafview)
+    - [2、转发视图](#2%E8%BD%AC%E5%8F%91%E8%A7%86%E5%9B%BE)
+    - [3、重定向视图](#3%E9%87%8D%E5%AE%9A%E5%90%91%E8%A7%86%E5%9B%BE)
+    - [4、视图控制器view-controller](#4%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8view-controller)
+- [七、RESTful](#%E4%B8%83restful)
+    - [1、RESTful简介](#1restful%E7%AE%80%E4%BB%8B)
+        - [a>资源](#a%E8%B5%84%E6%BA%90)
+        - [b>资源的表述](#b%E8%B5%84%E6%BA%90%E7%9A%84%E8%A1%A8%E8%BF%B0)
+        - [c>状态转移](#c%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB)
+    - [2、RESTful的实现](#2restful%E7%9A%84%E5%AE%9E%E7%8E%B0)
+    - [3、HiddenHttpMethodFilter](#3hiddenhttpmethodfilter)
+- [八、RESTful案例](#%E5%85%ABrestful%E6%A1%88%E4%BE%8B)
+    - [1、准备工作](#1%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C)
+    - [2、功能清单](#2%E5%8A%9F%E8%83%BD%E6%B8%85%E5%8D%95)
+    - [3、具体功能：访问首页](#3%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E8%AE%BF%E9%97%AE%E9%A6%96%E9%A1%B5)
+        - [a>配置view-controller](#a%E9%85%8D%E7%BD%AEview-controller)
+        - [b>创建页面](#b%E5%88%9B%E5%BB%BA%E9%A1%B5%E9%9D%A2)
+    - [4、具体功能：查询所有员工数据](#4%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E5%91%98%E5%B7%A5%E6%95%B0%E6%8D%AE)
+        - [a>控制器方法](#a%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95)
+        - [b>创建employee_list.html](#b%E5%88%9B%E5%BB%BAemployee_listhtml)
+    - [5、具体功能：删除](#5%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E5%88%A0%E9%99%A4)
+        - [a>创建处理delete请求方式的表单](#a%E5%88%9B%E5%BB%BA%E5%A4%84%E7%90%86delete%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E7%9A%84%E8%A1%A8%E5%8D%95)
+        - [b>删除超链接绑定点击事件](#b%E5%88%A0%E9%99%A4%E8%B6%85%E9%93%BE%E6%8E%A5%E7%BB%91%E5%AE%9A%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6)
+        - [c>控制器方法](#c%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95)
+    - [6、具体功能：跳转到添加数据页面](#6%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E8%B7%B3%E8%BD%AC%E5%88%B0%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E9%A1%B5%E9%9D%A2)
+        - [a>配置view-controller](#a%E9%85%8D%E7%BD%AEview-controller-1)
+        - [b>创建employee_add.html](#b%E5%88%9B%E5%BB%BAemployee_addhtml)
+    - [7、具体功能：执行保存](#7%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E6%89%A7%E8%A1%8C%E4%BF%9D%E5%AD%98)
+        - [a>控制器方法](#a%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95-1)
+    - [8、具体功能：跳转到更新数据页面](#8%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E8%B7%B3%E8%BD%AC%E5%88%B0%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E9%A1%B5%E9%9D%A2)
+        - [a>修改超链接](#a%E4%BF%AE%E6%94%B9%E8%B6%85%E9%93%BE%E6%8E%A5)
+        - [b>控制器方法](#b%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95)
+        - [c>创建employee_update.html](#c%E5%88%9B%E5%BB%BAemployee_updatehtml)
+    - [9、具体功能：执行更新](#9%E5%85%B7%E4%BD%93%E5%8A%9F%E8%83%BD%E6%89%A7%E8%A1%8C%E6%9B%B4%E6%96%B0)
+        - [a>控制器方法](#a%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95-2)
+- [八、HttpMessageConverter](#%E5%85%ABhttpmessageconverter)
+    - [1、@RequestBody](#1requestbody)
+    - [2、RequestEntity](#2requestentity)
+    - [3、@ResponseBody](#3responsebody)
+    - [4、SpringMVC处理json](#4springmvc%E5%A4%84%E7%90%86json)
+    - [5、SpringMVC处理ajax](#5springmvc%E5%A4%84%E7%90%86ajax)
+    - [6、@RestController注解](#6restcontroller%E6%B3%A8%E8%A7%A3)
+    - [7、ResponseEntity](#7responseentity)
+- [九、文件上传和下载](#%E4%B9%9D%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8C%E4%B8%8B%E8%BD%BD)
+    - [1、文件下载](#1%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD)
+    - [2、文件上传](#2%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0)
+- [十、拦截器](#%E5%8D%81%E6%8B%A6%E6%88%AA%E5%99%A8)
+    - [1、拦截器的配置](#1%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E9%85%8D%E7%BD%AE)
+    - [2、拦截器的三个抽象方法](#2%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8A%BD%E8%B1%A1%E6%96%B9%E6%B3%95)
+    - [3、多个拦截器的执行顺序](#3%E5%A4%9A%E4%B8%AA%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F)
+- [十一、异常处理器](#%E5%8D%81%E4%B8%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8)
+    - [1、基于配置的异常处理](#1%E5%9F%BA%E4%BA%8E%E9%85%8D%E7%BD%AE%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86)
+    - [2、基于注解的异常处理](#2%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86)
+- [十二、注解配置SpringMVC](#%E5%8D%81%E4%BA%8C%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AEspringmvc)
+    - [1、创建初始化类，代替web.xml](#1%E5%88%9B%E5%BB%BA%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B1%BB%E4%BB%A3%E6%9B%BFwebxml)
+    - [2、创建SpringConfig配置类，代替spring的配置文件](#2%E5%88%9B%E5%BB%BAspringconfig%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%A3%E6%9B%BFspring%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+    - [3、创建WebConfig配置类，代替SpringMVC的配置文件](#3%E5%88%9B%E5%BB%BAwebconfig%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BB%A3%E6%9B%BFspringmvc%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+    - [4、测试功能](#4%E6%B5%8B%E8%AF%95%E5%8A%9F%E8%83%BD)
+- [十三、SpringMVC执行流程](#%E5%8D%81%E4%B8%89springmvc%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B)
+    - [1、SpringMVC常用组件](#1springmvc%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6)
+    - [2、DispatcherServlet初始化过程](#2dispatcherservlet%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B)
+        - [a>初始化WebApplicationContext](#a%E5%88%9D%E5%A7%8B%E5%8C%96webapplicationcontext)
+        - [b>创建WebApplicationContext](#b%E5%88%9B%E5%BB%BAwebapplicationcontext)
+        - [c>DispatcherServlet初始化策略](#cdispatcherservlet%E5%88%9D%E5%A7%8B%E5%8C%96%E7%AD%96%E7%95%A5)
+    - [3、DispatcherServlet调用组件处理请求](#3dispatcherservlet%E8%B0%83%E7%94%A8%E7%BB%84%E4%BB%B6%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82)
+        - [a>processRequest()](#aprocessrequest)
+        - [b>doService()](#bdoservice)
+        - [c>doDispatch()](#cdodispatch)
+        - [d>processDispatchResult()](#dprocessdispatchresult)
+    - [4、SpringMVC的执行流程](#4springmvc%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B)
 
 # 一、SpringMVC简介
 
@@ -88,11 +213,11 @@ Spring版本：5.3.1
         <version>3.0.12.RELEASE</version>
     </dependency>
 </dependencies>
+123456789101112131415161718192021222324252627282930
 ```
 
 注：由于 Maven 的传递性，我们不必将所有需要的包全部配置依赖，而是配置最顶端的依赖，其他靠传递性导入。
-
-![images](img\img001.png)
+![在这里插入图片描述](https://res.mowangblog.top/img/2021/10/836b26dcd15140e486cb3a566abcc2b0.png)
 
 ### 3、配置web.xml
 
@@ -100,7 +225,7 @@ Spring版本：5.3.1
 
 ##### a>默认配置方式
 
-此配置作用下，SpringMVC的配置文件默认位于WEB-INF下，默认名称为\<servlet-name>-servlet.xml，例如，以下配置所对应SpringMVC的配置文件位于WEB-INF下，文件名为springMVC-servlet.xml
+此配置作用下，SpringMVC的配置文件默认位于WEB-INF下，默认名称为<servlet-name>-servlet.xml，例如，以下配置所对应SpringMVC的配置文件位于WEB-INF下，文件名为springMVC-servlet.xml
 
 ```xml
 <!-- 配置SpringMVC的前端控制器，对浏览器发送的请求统一进行处理 -->
@@ -117,6 +242,7 @@ Spring版本：5.3.1
     -->
     <url-pattern>/</url-pattern>
 </servlet-mapping>
+1234567891011121314
 ```
 
 ##### b>扩展配置方式
@@ -151,17 +277,18 @@ Spring版本：5.3.1
     -->
     <url-pattern>/</url-pattern>
 </servlet-mapping>
+123456789101112131415161718192021222324252627
 ```
 
 > 注：
 >
-> \<url-pattern>标签中使用/和/*的区别：
+> <url-pattern>标签中使用/和/*的区别：
 >
 > /所匹配的请求可以是/login或.html或.js或.css方式的请求路径，但是/不能匹配.jsp请求路径的请求
 >
 > 因此就可以避免在访问jsp页面时，该请求被DispatcherServlet处理，从而找不到相应的页面
 >
-> /*则能够匹配所有请求，例如在使用过滤器时，若需要对所有请求进行过滤，就需要使用/\*的写法
+> /*则能够匹配所有请求，例如在使用过滤器时，若需要对所有请求进行过滤，就需要使用/*的写法
 
 ### 4、创建请求控制器
 
@@ -176,6 +303,7 @@ Spring版本：5.3.1
 public class HelloController {
     
 }
+1234
 ```
 
 ### 5、创建springMVC的配置文件
@@ -228,6 +356,7 @@ public class HelloController {
         </bean>
     </mvc:message-converters>
 </mvc:annotation-driven>
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647
 ```
 
 ### 6、测试HelloWorld
@@ -245,6 +374,7 @@ public String index() {
     //设置视图名称
     return "index";
 }
+12345678
 ```
 
 ##### b>通过超链接跳转到指定页面
@@ -263,6 +393,7 @@ public String index() {
     <a th:href="@{/hello}">HelloWorld</a><br/>
 </body>
 </html>
+1234567891011
 ```
 
 在请求控制器中创建处理请求的方法
@@ -272,6 +403,7 @@ public String index() {
 public String HelloWorld() {
     return "target";
 }
+1234
 ```
 
 ### 7、总结
@@ -304,6 +436,7 @@ public class RequestMappingController {
     }
 
 }
+1234567891011
 ```
 
 ### 3、@RequestMapping注解的value属性
@@ -317,15 +450,14 @@ public class RequestMappingController {
 ```html
 <a th:href="@{/testRequestMapping}">测试@RequestMapping的value属性-->/testRequestMapping</a><br>
 <a th:href="@{/test}">测试@RequestMapping的value属性-->/test</a><br>
-```
-
-```java
+12
 @RequestMapping(
         value = {"/testRequestMapping", "/test"}
 )
 public String testRequestMapping(){
     return "success";
 }
+123456
 ```
 
 ### 4、@RequestMapping注解的method属性
@@ -334,16 +466,14 @@ public String testRequestMapping(){
 
 @RequestMapping注解的method属性是一个RequestMethod类型的数组，表示该请求映射能够匹配多种请求方式的请求
 
-若当前请求的请求地址满足请求映射的value属性，但是请求方式不满足method属性，则浏览器报错405：Request method 'POST' not supported
+若当前请求的请求地址满足请求映射的value属性，但是请求方式不满足method属性，则浏览器报错405：Request method ‘POST’ not supported
 
 ```html
 <a th:href="@{/test}">测试@RequestMapping的value属性-->/test</a><br>
 <form th:action="@{/test}" method="post">
     <input type="submit">
 </form>
-```
-
-```java
+1234
 @RequestMapping(
         value = {"/testRequestMapping", "/test"},
         method = {RequestMethod.GET, RequestMethod.POST}
@@ -351,19 +481,20 @@ public String testRequestMapping(){
 public String testRequestMapping(){
     return "success";
 }
+1234567
 ```
 
 > 注：
 >
 > 1、对于处理指定请求方式的控制器方法，SpringMVC中提供了@RequestMapping的派生注解
 >
-> 处理get请求的映射-->@GetMapping
+> 处理get请求的映射–>@GetMapping
 >
-> 处理post请求的映射-->@PostMapping
+> 处理post请求的映射–>@PostMapping
 >
-> 处理put请求的映射-->@PutMapping
+> 处理put请求的映射–>@PutMapping
 >
-> 处理delete请求的映射-->@DeleteMapping
+> 处理delete请求的映射–>@DeleteMapping
 >
 > 2、常用的请求方式有get，post，put，delete
 >
@@ -377,19 +508,17 @@ public String testRequestMapping(){
 
 @RequestMapping注解的params属性是一个字符串类型的数组，可以通过四种表达式设置请求参数和请求映射的匹配关系
 
-"param"：要求请求映射所匹配的请求必须携带param请求参数
+“param”：要求请求映射所匹配的请求必须携带param请求参数
 
-"!param"：要求请求映射所匹配的请求必须不能携带param请求参数
+“!param”：要求请求映射所匹配的请求必须不能携带param请求参数
 
-"param=value"：要求请求映射所匹配的请求必须携带param请求参数且param=value
+“param=value”：要求请求映射所匹配的请求必须携带param请求参数且param=value
 
-"param!=value"：要求请求映射所匹配的请求必须携带param请求参数但是param!=value
+“param!=value”：要求请求映射所匹配的请求必须携带param请求参数但是param!=value
 
 ```html
 <a th:href="@{/test(username='admin',password=123456)">测试@RequestMapping的params属性-->/test</a><br>
-```
-
-```java
+1
 @RequestMapping(
         value = {"/testRequestMapping", "/test"}
         ,method = {RequestMethod.GET, RequestMethod.POST}
@@ -398,11 +527,12 @@ public String testRequestMapping(){
 public String testRequestMapping(){
     return "success";
 }
+12345678
 ```
 
 > 注：
 >
-> 若当前请求满足@RequestMapping注解的value和method属性，但是不满足params属性，此时页面回报错400：Parameter conditions "username, password!=123456" not met for actual request parameters: username={admin}, password={123456}
+> 若当前请求满足@RequestMapping注解的value和method属性，但是不满足params属性，此时页面回报错400：Parameter conditions “username, password!=123456” not met for actual request parameters: username={admin}, password={123456}
 
 ### 6、@RequestMapping注解的headers属性（了解）
 
@@ -410,13 +540,13 @@ public String testRequestMapping(){
 
 @RequestMapping注解的headers属性是一个字符串类型的数组，可以通过四种表达式设置请求头信息和请求映射的匹配关系
 
-"header"：要求请求映射所匹配的请求必须携带header请求头信息
+“header”：要求请求映射所匹配的请求必须携带header请求头信息
 
-"!header"：要求请求映射所匹配的请求必须不能携带header请求头信息
+“!header”：要求请求映射所匹配的请求必须不能携带header请求头信息
 
-"header=value"：要求请求映射所匹配的请求必须携带header请求头信息且header=value
+“header=value”：要求请求映射所匹配的请求必须携带header请求头信息且header=value
 
-"header!=value"：要求请求映射所匹配的请求必须携带header请求头信息且header!=value
+“header!=value”：要求请求映射所匹配的请求必须携带header请求头信息且header!=value
 
 若当前请求满足@RequestMapping注解的value和method属性，但是不满足headers属性，此时页面显示404错误，即资源未找到
 
@@ -426,9 +556,9 @@ public String testRequestMapping(){
 
 *：表示任意的0个或多个字符
 
-\**：表示任意的一层或多层目录
+**：表示任意的一层或多层目录
 
-注意：在使用\**时，只能使用/**/xxx的方式
+注意：在使用**时，只能使用/**/xxx的方式
 
 ### 8、SpringMVC支持路径中的占位符（重点）
 
@@ -440,15 +570,14 @@ SpringMVC路径中的占位符常用于RESTful风格中，当请求路径中将�
 
 ```html
 <a th:href="@{/testRest/1/admin}">测试路径中的占位符-->/testRest</a><br>
-```
-
-```java
+1
 @RequestMapping("/testRest/{id}/{username}")
 public String testRest(@PathVariable("id") String id, @PathVariable("username") String username){
     System.out.println("id:"+id+",username:"+username);
     return "success";
 }
 //最终输出的内容为-->id:1,username:admin
+123456
 ```
 
 # 四、SpringMVC获取请求参数
@@ -465,6 +594,7 @@ public String testParam(HttpServletRequest request){
     System.out.println("username:"+username+",password:"+password);
     return "success";
 }
+1234567
 ```
 
 ### 2、通过控制器方法的形参获取请求参数
@@ -473,14 +603,13 @@ public String testParam(HttpServletRequest request){
 
 ```html
 <a th:href="@{/testParam(username='admin',password=123456)}">测试获取请求参数-->/testParam</a><br>
-```
-
-```java
+1
 @RequestMapping("/testParam")
 public String testParam(String username, String password){
     System.out.println("username:"+username+",password:"+password);
     return "success";
 }
+12345
 ```
 
 > 注：
@@ -501,7 +630,7 @@ value：指定为形参赋值的请求参数的参数名
 
 required：设置是否必须传输此请求参数，默认值为true
 
-若设置为true时，则当前请求必须传输value所指定的请求参数，若没有传输该请求参数，且没有设置defaultValue属性，则页面报错400：Required String parameter 'xxx' is not present；若设置为false，则当前请求不是必须传输value所指定的请求参数，若没有传输，则注解所标识的形参的值为null
+若设置为true时，则当前请求必须传输value所指定的请求参数，若没有传输该请求参数，且没有设置defaultValue属性，则页面报错400：Required String parameter ‘xxx’ is not present；若设置为false，则当前请求不是必须传输value所指定的请求参数，若没有传输，则注解所标识的形参的值为null
 
 defaultValue：不管required属性值为true或false，当value所指定的请求参数没有传输或传输的值为""时，则使用默认值为形参赋值
 
@@ -530,15 +659,14 @@ defaultValue：不管required属性值为true或false，当value所指定的请�
     邮箱：<input type="text" name="email"><br>
     <input type="submit">
 </form>
-```
-
-```java
+12345678
 @RequestMapping("/testpojo")
 public String testPOJO(User user){
     System.out.println(user);
     return "success";
 }
 //最终结果-->User{id=null, username='张三', password='123', age=23, sex='男', email='123@qq.com'}
+123456
 ```
 
 ### 7、解决获取请求参数的乱码问题
@@ -563,6 +691,7 @@ public String testPOJO(User user){
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
 </filter-mapping>
+1234567891011121314151617
 ```
 
 > 注：
@@ -579,6 +708,7 @@ public String testServletAPI(HttpServletRequest request){
     request.setAttribute("testScope", "hello,servletAPI");
     return "success";
 }
+12345
 ```
 
 ### 2、使用ModelAndView向request域对象共享数据
@@ -598,6 +728,7 @@ public ModelAndView testModelAndView(){
     mav.setViewName("success");
     return mav;
 }
+1234567891011121314
 ```
 
 ### 3、使用Model向request域对象共享数据
@@ -608,6 +739,7 @@ public String testModel(Model model){
     model.addAttribute("testScope", "hello,Model");
     return "success";
 }
+12345
 ```
 
 ### 4、使用map向request域对象共享数据
@@ -618,6 +750,7 @@ public String testMap(Map<String, Object> map){
     map.put("testScope", "hello,Map");
     return "success";
 }
+12345
 ```
 
 ### 5、使用ModelMap向request域对象共享数据
@@ -628,6 +761,7 @@ public String testModelMap(ModelMap modelMap){
     modelMap.addAttribute("testScope", "hello,ModelMap");
     return "success";
 }
+12345
 ```
 
 ### 6、Model、ModelMap、Map的关系
@@ -639,6 +773,7 @@ public interface Model{}
 public class ModelMap extends LinkedHashMap<String, Object> {}
 public class ExtendedModelMap extends ModelMap implements Model {}
 public class BindingAwareModelMap extends ExtendedModelMap {}
+1234
 ```
 
 ### 7、向session域共享数据
@@ -649,6 +784,7 @@ public String testSession(HttpSession session){
     session.setAttribute("testSessionScope", "hello,session");
     return "success";
 }
+12345
 ```
 
 ### 8、向application域共享数据
@@ -660,6 +796,7 @@ public String testApplication(HttpSession session){
     application.setAttribute("testApplicationScope", "hello,application");
     return "success";
 }
+123456
 ```
 
 # 六、SpringMVC的视图
@@ -681,9 +818,10 @@ SpringMVC视图的种类很多，默认有转发视图和重定向视图
 public String testHello(){
     return "hello";
 }
+1234
 ```
 
-![](img/img002.png)
+![在这里插入图片描述](https://res.mowangblog.top/img/2021/10/781f6b299e6b41a8b006866ecbcb76ba.png)
 
 ### 2、转发视图
 
@@ -693,16 +831,17 @@ SpringMVC中创建转发视图的情况：
 
 当控制器方法中所设置的视图名称以"forward:"为前缀时，创建InternalResourceView视图，此时的视图名称不会被SpringMVC配置文件中所配置的视图解析器解析，而是会将前缀"forward:"去掉，剩余部分作为最终路径通过转发的方式实现跳转
 
-例如"forward:/"，"forward:/employee"
+例如"forward:/"，“forward:/employee”
 
 ```java
 @RequestMapping("/testForward")
 public String testForward(){
     return "forward:/testHello";
 }
+1234
 ```
 
-![image-20210706201316593](img/img003.png)
+![在这里插入图片描述](https://res.mowangblog.top/img/2021/10/71526c269bbb447b8701d906b2859965.png)
 
 ### 3、重定向视图
 
@@ -710,16 +849,17 @@ SpringMVC中默认的重定向视图是RedirectView
 
 当控制器方法中所设置的视图名称以"redirect:"为前缀时，创建RedirectView视图，此时的视图名称不会被SpringMVC配置文件中所配置的视图解析器解析，而是会将前缀"redirect:"去掉，剩余部分作为最终路径通过重定向的方式实现跳转
 
-例如"redirect:/"，"redirect:/employee"
+例如"redirect:/"，“redirect:/employee”
 
 ```java
 @RequestMapping("/testRedirect")
 public String testRedirect(){
     return "redirect:/testHello";
 }
+1234
 ```
 
-![image-20210706201602267](img/img004.png)
+![在这里插入图片描述](https://res.mowangblog.top/img/2021/10/ec5b5371ea804cafb27e2751231df362.png)
 
 > 注：
 >
@@ -735,6 +875,7 @@ public String testRedirect(){
 	view-name：设置请求地址所对应的视图名称
 -->
 <mvc:view-controller path="/testView" view-name="success"></mvc:view-controller>
+12345
 ```
 
 > 注：
@@ -769,12 +910,12 @@ REST：**Re**presentational **S**tate **T**ransfer，表现层资源状态转移
 
 REST 风格提倡 URL 地址使用统一的风格设计，从前到后各个单词使用斜杠分开，不使用问号键值对方式携带请求参数，而是将要发送给服务器的数据作为 URL 地址的一部分，以保证整体风格的一致性。
 
-| 操作     | 传统方式         | REST风格                |
-| -------- | ---------------- | ----------------------- |
-| 查询操作 | getUserById?id=1 | user/1-->get请求方式    |
-| 保存操作 | saveUser         | user-->post请求方式     |
-| 删除操作 | deleteUser?id=1  | user/1-->delete请求方式 |
-| 更新操作 | updateUser       | user-->put请求方式      |
+| 操作     | 传统方式         | REST风格               |
+| -------- | ---------------- | ---------------------- |
+| 查询操作 | getUserById?id=1 | user/1–>get请求方式    |
+| 保存操作 | saveUser         | user–>post请求方式     |
+| 删除操作 | deleteUser?id=1  | user/1–>delete请求方式 |
+| 更新操作 | updateUser       | user–>put请求方式      |
 
 ### 3、HiddenHttpMethodFilter
 
@@ -788,9 +929,9 @@ a>当前请求的请求方式必须为post
 
 b>当前请求必须传输请求参数_method
 
-满足以上条件，**HiddenHttpMethodFilter** 过滤器就会将当前请求的请求方式转换为请求参数_method的值，因此请求参数\_method的值才是最终的请求方式
+满足以上条件，**HiddenHttpMethodFilter** 过滤器就会将当前请求的请求方式转换为请求参数_method的值，因此请求参数_method的值才是最终的请求方式
 
-在web.xml中注册**HiddenHttpMethodFilter** 
+在web.xml中注册**HiddenHttpMethodFilter**
 
 ```xml
 <filter>
@@ -801,6 +942,7 @@ b>当前请求必须传输请求参数_method
     <filter-name>HiddenHttpMethodFilter</filter-name>
     <url-pattern>/*</url-pattern>
 </filter-mapping>
+12345678
 ```
 
 > 注：
@@ -819,9 +961,8 @@ b>当前请求必须传输请求参数_method
 >
 > - ```
 >   String paramValue = request.getParameter(this.methodParam);
+>   1
 >   ```
-
-
 
 # 八、RESTful案例
 
@@ -888,6 +1029,7 @@ b>当前请求必须传输请求参数_method
      public Employee() {
      }
   }
+  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354
   ```
 
 - 准备dao模拟数据
@@ -939,6 +1081,7 @@ b>当前请求必须传输请求参数_method
         employees.remove(id);
      }
   }
+  12345678910111213141516171819202122232425262728293031323334353637383940414243444546
   ```
 
 ### 2、功能清单
@@ -959,6 +1102,7 @@ b>当前请求必须传输请求参数_method
 
 ```xml
 <mvc:view-controller path="/" view-name="index"/>
+1
 ```
 
 ##### b>创建页面
@@ -975,6 +1119,7 @@ b>当前请求必须传输请求参数_method
 <a th:href="@{/employee}">访问员工信息</a>
 </body>
 </html>
+1234567891011
 ```
 
 ### 4、具体功能：查询所有员工数据
@@ -988,6 +1133,7 @@ public String getEmployeeList(Model model){
     model.addAttribute("employeeList", employeeList);
     return "employee_list";
 }
+123456
 ```
 
 ##### b>创建employee_list.html
@@ -1026,6 +1172,7 @@ public String getEmployeeList(Model model){
     </table>
 </body>
 </html>
+123456789101112131415161718192021222324252627282930313233
 ```
 
 ### 5、具体功能：删除
@@ -1038,6 +1185,7 @@ public String getEmployeeList(Model model){
     <!-- HiddenHttpMethodFilter要求：必须传输_method请求参数，并且值为最终的请求方式 -->
     <input type="hidden" name="_method" value="delete"/>
 </form>
+12345
 ```
 
 ##### b>删除超链接绑定点击事件
@@ -1046,12 +1194,14 @@ public String getEmployeeList(Model model){
 
 ```html
 <script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+1
 ```
 
 删除超链接
 
 ```html
 <a class="deleteA" @click="deleteEmployee" th:href="@{'/employee/'+${employee.id}}">delete</a>
+1
 ```
 
 通过vue处理点击事件
@@ -1075,6 +1225,7 @@ public String getEmployeeList(Model model){
         }
     });
 </script>
+123456789101112131415161718
 ```
 
 ##### c>控制器方法
@@ -1085,6 +1236,7 @@ public String deleteEmployee(@PathVariable("id") Integer id){
     employeeDao.delete(id);
     return "redirect:/employee";
 }
+12345
 ```
 
 ### 6、具体功能：跳转到添加数据页面
@@ -1093,6 +1245,7 @@ public String deleteEmployee(@PathVariable("id") Integer id){
 
 ```xml
 <mvc:view-controller path="/toAdd" view-name="employee_add"></mvc:view-controller>
+1
 ```
 
 ##### b>创建employee_add.html
@@ -1116,6 +1269,7 @@ public String deleteEmployee(@PathVariable("id") Integer id){
 
 </body>
 </html>
+123456789101112131415161718
 ```
 
 ### 7、具体功能：执行保存
@@ -1128,6 +1282,7 @@ public String addEmployee(Employee employee){
     employeeDao.save(employee);
     return "redirect:/employee";
 }
+12345
 ```
 
 ### 8、具体功能：跳转到更新数据页面
@@ -1136,6 +1291,7 @@ public String addEmployee(Employee employee){
 
 ```html
 <a th:href="@{'/employee/'+${employee.id}}">update</a>
+1
 ```
 
 ##### b>控制器方法
@@ -1147,6 +1303,7 @@ public String getEmployeeById(@PathVariable("id") Integer id, Model model){
     model.addAttribute("employee", employee);
     return "employee_update";
 }
+123456
 ```
 
 ##### c>创建employee_update.html
@@ -1176,6 +1333,7 @@ public String getEmployeeById(@PathVariable("id") Integer id, Model model){
 
 </body>
 </html>
+123456789101112131415161718192021222324
 ```
 
 ### 9、具体功能：执行更新
@@ -1188,6 +1346,7 @@ public String updateEmployee(Employee employee){
     employeeDao.save(employee);
     return "redirect:/employee";
 }
+12345
 ```
 
 # 八、HttpMessageConverter
@@ -1208,14 +1367,13 @@ ResponseEntity
     密码：<input type="password" name="password"><br>
     <input type="submit">
 </form>
-```
-
-```java
+12345
 @RequestMapping("/testRequestBody")
 public String testRequestBody(@RequestBody String requestBody){
     System.out.println("requestBody:"+requestBody);
     return "success";
 }
+12345
 ```
 
 输出结果：
@@ -1233,10 +1391,11 @@ public String testRequestEntity(RequestEntity<String> requestEntity){
     System.out.println("requestBody:"+requestEntity.getBody());
     return "success";
 }
+123456
 ```
 
 输出结果：
-requestHeader:[host:"localhost:8080", connection:"keep-alive", content-length:"27", cache-control:"max-age=0", sec-ch-ua:"" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"", sec-ch-ua-mobile:"?0", upgrade-insecure-requests:"1", origin:"http://localhost:8080", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"]
+requestHeader:[host:“localhost:8080”, connection:“keep-alive”, content-length:“27”, cache-control:“max-age=0”, sec-ch-ua:"" Not A;Brand";v=“99”, “Chromium”;v=“90”, “Google Chrome”;v=“90"”, sec-ch-ua-mobile:"?0", upgrade-insecure-requests:“1”, origin:“http://localhost:8080”, user-agent:“Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36”]
 requestBody:username=admin&password=123
 
 ### 3、@ResponseBody
@@ -1249,6 +1408,7 @@ requestBody:username=admin&password=123
 public String testResponseBody(){
     return "success";
 }
+12345
 ```
 
 结果：浏览器页面显示success
@@ -1265,12 +1425,14 @@ a>导入jackson的依赖
     <artifactId>jackson-databind</artifactId>
     <version>2.12.1</version>
 </dependency>
+12345
 ```
 
 b>在SpringMVC的核心配置文件中开启mvc的注解驱动，此时在HandlerAdaptor中会自动装配一个消息转换器：MappingJackson2HttpMessageConverter，可以将响应到浏览器的Java对象转换为Json格式的字符串
 
 ```
 <mvc:annotation-driven />
+1
 ```
 
 c>在处理器方法上使用@ResponseBody注解进行标识
@@ -1283,11 +1445,12 @@ d>将Java对象直接作为控制器方法的返回值返回，就会自动转�
 public User testResponseUser(){
     return new User(1001,"admin","123456",23,"男");
 }
+12345
 ```
 
 浏览器的页面中展示的结果：
 
-{"id":1001,"username":"admin","password":"123456","age":23,"sex":"男"}
+{“id”:1001,“username”:“admin”,“password”:“123456”,“age”:23,“sex”:“男”}
 
 ### 5、SpringMVC处理ajax
 
@@ -1297,6 +1460,7 @@ a>请求超链接：
 <div id="app">
 	<a th:href="@{/testAjax}" @click="testAjax">testAjax</a><br>
 </div>
+123
 ```
 
 b>通过vue和axios处理点击事件：
@@ -1324,6 +1488,7 @@ b>通过vue和axios处理点击事件：
         }
     });
 </script>
+12345678910111213141516171819202122
 ```
 
 c>控制器方法：
@@ -1335,6 +1500,7 @@ public String testAjax(String username, String password){
     System.out.println("username:"+username+",password:"+password);
     return "hello,ajax";
 }
+123456
 ```
 
 ### 6、@RestController注解
@@ -1376,11 +1542,12 @@ public ResponseEntity<byte[]> testResponseEntity(HttpSession session) throws IOE
     is.close();
     return responseEntity;
 }
+123456789101112131415161718192021222324
 ```
 
 ### 2、文件上传
 
-文件上传要求form表单的请求方式必须为post，并且添加属性enctype="multipart/form-data"
+文件上传要求form表单的请求方式必须为post，并且添加属性enctype=“multipart/form-data”
 
 SpringMVC中将上传的文件封装到MultipartFile对象中，通过此对象可以获取文件相关信息
 
@@ -1395,6 +1562,7 @@ a>添加依赖：
     <artifactId>commons-fileupload</artifactId>
     <version>1.3.1</version>
 </dependency>
+123456
 ```
 
 b>在SpringMVC的配置文件中添加配置：
@@ -1402,6 +1570,7 @@ b>在SpringMVC的配置文件中添加配置：
 ```xml
 <!--必须通过文件解析器的解析才能将文件转换为MultipartFile对象-->
 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+12
 ```
 
 c>控制器方法：
@@ -1426,6 +1595,7 @@ public String testUp(MultipartFile photo, HttpSession session) throws IOExceptio
     photo.transferTo(new File(finalPath));
     return "success";
 }
+12345678910111213141516171819
 ```
 
 # 十、拦截器
@@ -1450,6 +1620,7 @@ SpringMVC的拦截器必须在SpringMVC的配置文件中进行配置：
 <!-- 
 	以上配置方式可以通过ref或bean标签设置拦截器，通过mvc:mapping设置需要拦截的请求，通过mvc:exclude-mapping设置需要排除的请求，即不需要拦截的请求
 -->
+1234567891011
 ```
 
 ### 2、拦截器的三个抽象方法
@@ -1500,6 +1671,7 @@ SpringMVC提供了自定义的异常处理器SimpleMappingExceptionResolver，�
     -->
     <property name="exceptionAttribute" value="ex"></property>
 </bean>
+123456789101112131415
 ```
 
 ### 2、基于注解的异常处理
@@ -1518,6 +1690,7 @@ public class ExceptionController {
     }
 
 }
+12345678910111213
 ```
 
 # 十二、注解配置SpringMVC
@@ -1572,6 +1745,7 @@ public class WebInit extends AbstractAnnotationConfigDispatcherServletInitialize
         return new Filter[]{encodingFilter, hiddenHttpMethodFilter};
     }
 }
+123456789101112131415161718192021222324252627282930313233343536373839404142
 ```
 
 ### 2、创建SpringConfig配置类，代替spring的配置文件
@@ -1581,6 +1755,7 @@ public class WebInit extends AbstractAnnotationConfigDispatcherServletInitialize
 public class SpringConfig {
 	//ssm整合之后，spring的配置信息写在此类中
 }
+1234
 ```
 
 ### 3、创建WebConfig配置类，代替SpringMVC的配置文件
@@ -1665,6 +1840,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 
 }
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879
 ```
 
 ### 4、测试功能
@@ -1674,6 +1850,7 @@ public class WebConfig implements WebMvcConfigurer {
 public String index(){
     return "index";
 }
+1234
 ```
 
 # 十三、SpringMVC执行流程
@@ -1708,7 +1885,7 @@ public String index(){
 
 DispatcherServlet 本质上是一个 Servlet，所以天然的遵循 Servlet 的生命周期。所以宏观上是 Servlet 生命周期来进行调度。
 
-![images](img/img005.png)
+[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-kphToPhs-1627992919015)(img/img005.png)]
 
 ##### a>初始化WebApplicationContext
 
@@ -1769,6 +1946,7 @@ protected WebApplicationContext initWebApplicationContext() {
 
     return wac;
 }
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354
 ```
 
 ##### b>创建WebApplicationContext
@@ -1799,6 +1977,7 @@ protected WebApplicationContext createWebApplicationContext(@Nullable Applicatio
 
     return wac;
 }
+1234567891011121314151617181920212223
 ```
 
 ##### c>DispatcherServlet初始化策略
@@ -1819,6 +1998,7 @@ protected void initStrategies(ApplicationContext context) {
    initViewResolvers(context);
    initFlashMapManager(context);
 }
+1234567891011
 ```
 
 ### 3、DispatcherServlet调用组件处理请求
@@ -1869,6 +2049,7 @@ protected final void processRequest(HttpServletRequest request, HttpServletRespo
         publishRequestHandledEvent(request, response, startTime, failureCause);
     }
 }
+123456789101112131415161718192021222324252627282930313233343536373839
 ```
 
 ##### b>doService()
@@ -1930,6 +2111,7 @@ protected void doService(HttpServletRequest request, HttpServletResponse respons
         }
     }
 }
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354
 ```
 
 ##### c>doDispatch()
@@ -2030,6 +2212,7 @@ protected void doDispatch(HttpServletRequest request, HttpServletResponse respon
         }
     }
 }
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293
 ```
 
 ##### d>processDispatchResult()
@@ -2078,13 +2261,13 @@ private void processDispatchResult(HttpServletRequest request, HttpServletRespon
         mappedHandler.triggerAfterCompletion(request, response, null);
     }
 }
+12345678910111213141516171819202122232425262728293031323334353637383940414243
 ```
 
 ### 4、SpringMVC的执行流程
 
-1) 用户向服务器发送请求，请求被SpringMVC 前端控制器 DispatcherServlet捕获。
-
-2) DispatcherServlet对请求URL进行解析，得到请求资源标识符（URI），判断请求URI对应的映射：
+1. 用户向服务器发送请求，请求被SpringMVC 前端控制器 DispatcherServlet捕获。
+2. DispatcherServlet对请求URL进行解析，得到请求资源标识符（URI），判断请求URI对应的映射：
 
 a) 不存在
 
@@ -2092,25 +2275,18 @@ i. 再判断是否配置了mvc:default-servlet-handler
 
 ii. 如果没配置，则控制台报映射查找不到，客户端展示404错误
 
-![image-20210709214911404](img/img006.png)
-
-![image-20210709214947432](img/img007.png)
+![在这里插入图片描述](https://res.mowangblog.top/img/2021/10/8df6a30e77184eb0bc1547dae5838f65.png)
 
 iii. 如果有配置，则访问目标资源（一般为静态资源，如：JS,CSS,HTML），找不到客户端也会展示404错误
 
-![image-20210709215255693](img/img008.png)
-
-![image-20210709215336097](img/img009.png)
+![在这里插入图片描述](https://res.mowangblog.top/img/2021/10/67d25736b3b74dfe9145acedb0e8656d.png)
 
 b) 存在则执行下面的流程
 
-3) 根据该URI，调用HandlerMapping获得该Handler配置的所有相关的对象（包括Handler对象以及Handler对象对应的拦截器），最后以HandlerExecutionChain执行链对象的形式返回。
-
-4) DispatcherServlet 根据获得的Handler，选择一个合适的HandlerAdapter。
-
-5) 如果成功获得HandlerAdapter，此时将开始执行拦截器的preHandler(…)方法【正向】
-
-6) 提取Request中的模型数据，填充Handler入参，开始执行Handler（Controller)方法，处理请求。在填充Handler的入参过程中，根据你的配置，Spring将帮你做一些额外的工作：
+1. 根据该URI，调用HandlerMapping获得该Handler配置的所有相关的对象（包括Handler对象以及Handler对象对应的拦截器），最后以HandlerExecutionChain执行链对象的形式返回。
+2. DispatcherServlet 根据获得的Handler，选择一个合适的HandlerAdapter。
+3. 如果成功获得HandlerAdapter，此时将开始执行拦截器的preHandler(…)方法【正向】
+4. 提取Request中的模型数据，填充Handler入参，开始执行Handler（Controller)方法，处理请求。在填充Handler的入参过程中，根据你的配置，Spring将帮你做一些额外的工作：
 
 a) HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一个对象，将对象转换为指定的响应信息
 
@@ -2120,12 +2296,8 @@ c) 数据格式化：对请求消息进行数据格式化。 如将字符串转�
 
 d) 数据验证： 验证数据的有效性（长度、格式等），验证结果存储到BindingResult或Error中
 
-7) Handler执行完成后，向DispatcherServlet 返回一个ModelAndView对象。
-
-8) 此时将开始执行拦截器的postHandle(...)方法【逆向】。
-
-9) 根据返回的ModelAndView（此时会判断是否存在异常：如果存在异常，则执行HandlerExceptionResolver进行异常处理）选择一个适合的ViewResolver进行视图解析，根据Model和View，来渲染视图。
-
-10) 渲染视图完毕执行拦截器的afterCompletion(…)方法【逆向】。
-
-11) 将渲染结果返回给客户端。
+1. Handler执行完成后，向DispatcherServlet 返回一个ModelAndView对象。
+2. 此时将开始执行拦截器的postHandle(…)方法【逆向】。
+3. 根据返回的ModelAndView（此时会判断是否存在异常：如果存在异常，则执行HandlerExceptionResolver进行异常处理）选择一个适合的ViewResolver进行视图解析，根据Model和View，来渲染视图。
+4. 渲染视图完毕执行拦截器的afterCompletion(…)方法【逆向】。
+5. 将渲染结果返回给客户端。
